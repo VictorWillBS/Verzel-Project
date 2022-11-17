@@ -35,6 +35,9 @@ const Figure = styled.figure`
     width: calc((15px * 66.66));
     height: calc((15px * 66.66));
   }
+  @media (max-width: 1000px) {
+    display: none;
+  }
 `;
 
 const UserSection = styled.section`
@@ -43,4 +46,7 @@ const UserSection = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
+  @media (max-width: 1000px) {
+    width: 100%;
+  }
 `;

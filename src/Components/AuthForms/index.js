@@ -3,8 +3,9 @@ import { useParams } from 'react-router-dom';
 import { Button } from '@mui/material';
 import Input from './Input';
 export default function AuthForms() {
-  const { authTypes } = useParams();
-
+  const { authType } = useParams();
+  console.log(authType);
+  const isSignUp = authType === 'sign-up';
   return (
     <FormStyled>
       <TitleArticle>
@@ -12,7 +13,7 @@ export default function AuthForms() {
         <p> Insira as informações nos campos abaixo:</p>
       </TitleArticle>
       <Section>
-        <Input isSignUp={false} />
+        <Input isSignUp={isSignUp} />
       </Section>
       <Button
         id="submit"
@@ -26,7 +27,7 @@ export default function AuthForms() {
 }
 
 const FormStyled = styled.form`
-  width: 700px;
+  width: 70%;
   padding: 20px;
   height: 100%;
   display: flex;
@@ -37,6 +38,13 @@ const FormStyled = styled.form`
     width: 400px;
     height: 50px;
     border-radius: 10px;
+    @media (max-width: 1000px) {
+      width: 90%;
+    }
+  }
+  @media (max-width: 1000px) {
+    width: 90%;
+    justify-content: start;
   }
 `;
 const TitleArticle = styled.article`
@@ -53,6 +61,9 @@ const TitleArticle = styled.article`
     font-size: 14px;
     font-weight: 500px;
     color: #424242;
+  }
+  @media (max-width: 1000px) {
+    width: 90%;
   }
 `;
 
@@ -74,5 +85,8 @@ const Section = styled.section`
   }
   #signUp-Input {
     display: ${(props) => (props.isSignUp ? 'block' : 'none')};
+  }
+  @media (max-width: 1000px) {
+    width: 90%;
   }
 `;
