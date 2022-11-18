@@ -14,12 +14,15 @@ function returnSignInInput(insertSignData, signData) {
           insertSignData(e);
         }}
       />
+
       <TextField
         id="signIn-Input password"
         label="Senha"
         variant="outlined"
         name="password"
         value={signData.password}
+        helperText="Digite entre 6-30 caracteres."
+        sx={{ '&': { marginBottom: '10px' } }}
         type="password"
         onChange={(e) => {
           insertSignData(e);
