@@ -13,7 +13,9 @@ export function UserButtom() {
     }
     navigate('/iniciar-sessao/sign-in');
   }
-
+  const name = userData.name || '';
+  console.log(name);
+  const firstName = name.split(' ')[0];
   return (
     <UserSection
       onClick={() => {
@@ -32,7 +34,7 @@ export function UserButtom() {
       >
         <HiOutlineUserCircle />
       </IconContext.Provider>
-      <h5>{userData.name || 'Cadastrar'}</h5>
+      <h5>{name ? firstName : 'Cadastrar'}</h5>
     </UserSection>
   );
 }
