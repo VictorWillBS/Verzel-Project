@@ -9,13 +9,15 @@ export default function AuthForms() {
     email: '',
     name: '',
     password: '',
-    confirmPassowrd: '',
+    confirmPassword: '',
   };
   const [signData, setSignData] = useState({ ...signInitial });
   const [isSignUp, setIsSignUp] = useState('');
+  const [signStatus, setSignStatus] = useState(false);
   useEffect(() => {
     setIsSignUp(Boolean(authType === 'sign-up'));
     setSignData({ ...signInitial });
+    setSignStatus(false);
   }, [authType]);
   return (
     <FormStyled>
@@ -23,14 +25,22 @@ export default function AuthForms() {
         <h4> Crie ou Inicie uma Sessão</h4>
         <p> Insira as informações nos campos abaixo:</p>
       </TitleArticle>
-      <Section>
+      <Section isSignUp={isSignUp}>
         <Input
           isSignUp={isSignUp}
           signData={signData}
           setSignData={setSignData}
         />
       </Section>
-      <ButtonSign isSignUp={isSignUp} signData={signData} />
+      <HelperText sucess={signStatus.sucess}>
+        <p> {signStatus && signStatus.message}</p>
+      </HelperText>
+      <ButtonSign
+        isSignUp={isSignUp}
+        signData={signData}
+        signStatus={signStatus}
+        setSignStatus={setSignStatus}
+      />
       <ButtonChangeSign isSignUp={isSignUp} signData={signData} />
     </FormStyled>
   );
@@ -79,11 +89,11 @@ const TitleArticle = styled.article`
 
 const Section = styled.section`
   width: 400px;
-  height: 230px;
+  height: ${(props) => (props.isSignUp ? '280px' : '150px')};
   display: flex;
   flex-direction: column;
   align-items: start;
-  justify-content: space-evenly;
+  justify-content: space-between;
   margin: 20px 0;
   div,
   #signIn-Input,
@@ -93,8 +103,25 @@ const Section = styled.section`
     border-radius: 08px;
     box-sizing: border-box;
   }
-
+  #signUp-Input #password {
+    margin-bottom: 10px;
+  }
   @media (max-width: 1000px) {
     width: 90%;
+  }
+`;
+
+const HelperText = styled.section`
+  display: ${(props) => (props.sucess !== true ? 'initial' : 'none')};
+  width: 400px;
+  margin: 0 0 15px 0;
+  padding: 0 10px;
+  p {
+    font-size: 14px;
+    color: #f44336;
+  }
+  @media (max-width: 1000px) {
+    width: 90%;
+    padding: 0;
   }
 `;
