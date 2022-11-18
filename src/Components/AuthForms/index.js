@@ -1,11 +1,22 @@
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import { Button } from '@mui/material';
 import Input from './Input';
+import { ButtonChangeSign, ButtonSign } from './Button';
+import { useEffect, useState } from 'react';
 export default function AuthForms() {
   const { authType } = useParams();
-  console.log(authType);
-  const isSignUp = authType === 'sign-up';
+  const signInitial = {
+    email: '',
+    name: '',
+    password: '',
+    confirmPassowrd: '',
+  };
+  const [signData, setSignData] = useState({ ...signInitial });
+  const [isSignUp, setIsSignUp] = useState('');
+  useEffect(() => {
+    setIsSignUp(Boolean(authType === 'sign-up'));
+    setSignData({ ...signInitial });
+  }, [authType]);
   return (
     <FormStyled>
       <TitleArticle>
@@ -13,15 +24,14 @@ export default function AuthForms() {
         <p> Insira as informações nos campos abaixo:</p>
       </TitleArticle>
       <Section>
-        <Input isSignUp={isSignUp} />
+        <Input
+          isSignUp={isSignUp}
+          signData={signData}
+          setSignData={setSignData}
+        />
       </Section>
-      <Button
-        id="submit"
-        variant="contained"
-        sx={{ '&': { width: '55ch', backgroundColor: '#000' } }}
-      >
-        Iniciar sessão
-      </Button>
+      <ButtonSign isSignUp={isSignUp} signData={signData} />
+      <ButtonChangeSign isSignUp={isSignUp} signData={signData} />
     </FormStyled>
   );
 }
@@ -83,9 +93,7 @@ const Section = styled.section`
     border-radius: 08px;
     box-sizing: border-box;
   }
-  #signUp-Input {
-    display: ${(props) => (props.isSignUp ? 'block' : 'none')};
-  }
+
   @media (max-width: 1000px) {
     width: 90%;
   }
