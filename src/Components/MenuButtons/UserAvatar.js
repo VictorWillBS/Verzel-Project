@@ -1,11 +1,25 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { HiOutlineUserCircle } from 'react-icons/hi';
 import { IconContext } from 'react-icons';
+import userContext from '../../Context/userContext';
+import { useNavigate } from 'react-router-dom';
 export function UserButtom() {
-  const [userData, setUserData] = useState('Victor');
+  const { userData, setUserData } = useContext(userContext);
+  const navigate = useNavigate();
+  function redirectToSign() {
+    if (userData.name) {
+      return;
+    }
+    navigate('/iniciar-sessao/sign-in');
+  }
+
   return (
-    <UserSection>
+    <UserSection
+      onClick={() => {
+        redirectToSign();
+      }}
+    >
       <IconContext.Provider
         value={{
           size: '30px',
@@ -18,7 +32,7 @@ export function UserButtom() {
       >
         <HiOutlineUserCircle />
       </IconContext.Provider>
-      <h5>{userData}</h5>
+      <h5>{userData.name || 'Cadastrar'}</h5>
     </UserSection>
   );
 }
