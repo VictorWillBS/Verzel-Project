@@ -1,6 +1,45 @@
-import { Button, useEventCallback } from '@mui/material';
+import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-export function ButtonSign({ signData, isSignUp }) {
+import { signUp, signIn } from '../../Services/authApi';
+import { toast } from 'react-toastify';
+import { authErrosParse } from '../../utils/apiErrosParse';
+import { useContext } from 'react';
+import userContext from '../../Context/userContext';
+
+export function ButtonSign({ signData, isSignUp, setSignStatus }) {
+  const { setUserData } = useContext(userContext);
+  const navigate = useNavigate();
+  async function submit(e) {
+    e.preventDefault();
+    if (isSignUp === true) {
+      try {
+        toast('Cadastro Concluído!');
+        await signUp(signData);
+        setSignStatus({ sucess: true, message: '' });
+        navigate('/iniciar-sessao/sign-in');
+      } catch ({ response }) {
+        setSignStatus({
+          sucess: false,
+          message: authErrosParse(response.status, isSignUp),
+        });
+      }
+    } else {
+      delete signData.confirmPassword;
+      delete signData.name;
+      try {
+        const response = await signIn(signData);
+        toast('Bem-vindo!');
+        setUserData(response);
+        setSignStatus({ sucess: true, message: '' });
+        navigate('/');
+      } catch ({ response }) {
+        setSignStatus({
+          sucess: false,
+          message: authErrosParse(response.status, isSignUp),
+        });
+      }
+    }
+  }
   return (
     <>
       <Button
@@ -10,8 +49,8 @@ export function ButtonSign({ signData, isSignUp }) {
           '&': { width: '55ch', backgroundColor: '#212121' },
           '&:hover': { backgroundColor: '#212121', filter: 'brightness(1.50)' },
         }}
-        onClick={() => {
-          console.log(signData);
+        onClick={(e) => {
+          submit(e);
         }}
       >
         {isSignUp === true ? 'Fazer Cadastro' : 'Iniciar Sessão'}
